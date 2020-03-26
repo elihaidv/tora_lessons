@@ -3,6 +3,7 @@ import 'package:flutter_music_app/model/favorite_model.dart';
 import 'package:flutter_music_app/model/local_view_model.dart';
 import 'package:flutter_music_app/model/song_model.dart';
 import 'package:flutter_music_app/model/theme_model.dart';
+import 'package:flutter_music_app/service/Models.dart';
 import 'package:provider/provider.dart';
 
 List<SingleChildCloneableWidget> providers = [
@@ -24,8 +25,8 @@ List<SingleChildCloneableWidget> independentServices = [
   ChangeNotifierProvider<DownloadModel>(
     create: (context) => DownloadModel(),
   ),
-  ChangeNotifierProvider<SongModel>(
-    create: (context) => SongModel(),
+  ChangeNotifierProvider<LessonModel>(
+    create: (context) => LessonModel(),
   )
 ];
 

@@ -77,67 +77,69 @@ class _TabNavigatorState extends State<TabNavigator> {
             BubbleBottomBarItem(
               backgroundColor: Theme.of(context).primaryColorDark,
               icon: Icon(
-                Icons.search,
+                Icons.home,
                 size: 25.0,
               ),
               activeIcon: Icon(
-                Icons.search,
+                Icons.home,
                 size: 25.0,
                 color: Colors.white,
               ),
               title: Text(
-                S.of(context).tabSearch,
+                S.of(context).tabHome,
                 style: TextStyle(color: Colors.white),
               ),
             ),
             BubbleBottomBarItem(
               backgroundColor: Theme.of(context).primaryColorDark,
               icon: Icon(
-                Icons.music_note,
+                Icons.category,
                 size: 25.0,
               ),
               activeIcon: Icon(
-                Icons.music_note,
+                Icons.category,
                 size: 25.0,
                 color: Colors.white,
               ),
               title: Text(
-                S.of(context).tabMusic,
+                S.of(context).tabCategories,
                 style: TextStyle(color: Colors.white),
               ),
             ),
             BubbleBottomBarItem(
               backgroundColor: Theme.of(context).primaryColorDark,
               icon: Icon(
-                Icons.favorite,
+                Icons.history,
                 size: 25.0,
               ),
               activeIcon: Icon(
-                Icons.favorite,
+                Icons.history,
                 size: 25.0,
                 color: Colors.white,
               ),
               title: Text(
-                S.of(context).tabFavorite,
+                S.of(context).tabHistory,
                 style: TextStyle(color: Colors.white),
               ),
             ),
             BubbleBottomBarItem(
               backgroundColor: Theme.of(context).primaryColorDark,
               icon: Icon(
-                Icons.person,
+                Icons.file_download,
                 size: 25.0,
               ),
               activeIcon: Icon(
-                Icons.person,
+                Icons.file_download,
                 size: 25.0,
                 color: Colors.white,
               ),
               title: Text(
-                S.of(context).tabUser,
+                S.of(context).tabSaved,
                 style: TextStyle(color: Colors.white),
               ),
             ),
+
+
           ],
           opacity: 1,
           elevation: 0,

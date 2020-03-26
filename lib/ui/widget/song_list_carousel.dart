@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_music_app/model/favorite_model.dart';
 import 'package:flutter_music_app/model/song_model.dart';
+import 'package:flutter_music_app/service/Models.dart';
 import 'package:provider/provider.dart';
 
-class SongListCarousel extends StatefulWidget {
+class LessonListCarousel extends StatefulWidget {
   @override
   _ForYouCarouselState createState() => _ForYouCarouselState();
 }
 
-class _ForYouCarouselState extends State<SongListCarousel> {
-  Widget _buildSongItem(Song data) {
+class _ForYouCarouselState extends State<LessonListCarousel> {
+  Widget _buildLessonItem(Lesson data) {
     FavoriteModel favoriteModel = Provider.of(context);
-    SongModel songModel = Provider.of(context);
-    return data.songid == songModel.currentSong.songid
+    LessonModel songModel = Provider.of(context);
+    return data.id == songModel.currentLesson.id
         ? Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: ClipRRect(
@@ -27,7 +28,7 @@ class _ForYouCarouselState extends State<SongListCarousel> {
                       child: Container(
                           width: 50,
                           height: 50,
-                          child: Image.network(data.pic)),
+                          child: Image.network(data.image)),
                     ),
                     SizedBox(
                       width: 20.0,
@@ -55,7 +56,7 @@ class _ForYouCarouselState extends State<SongListCarousel> {
                               height: 10,
                             ),
                             Text(
-                              data.author,
+                              data.rav.name,
                               style: data.url == null
                                   ? TextStyle(
                                       fontSize: 10.0,
@@ -88,7 +89,7 @@ class _ForYouCarouselState extends State<SongListCarousel> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12.0),
                   child: Container(
-                      width: 50, height: 50, child: Image.network(data.pic)),
+                      width: 50, height: 50, child: Image.network(data.image)),
                 ),
                 SizedBox(
                   width: 20.0,
@@ -116,7 +117,7 @@ class _ForYouCarouselState extends State<SongListCarousel> {
                           height: 10,
                         ),
                         Text(
-                          data.author,
+                          data.rav.name,
                           style: data.url == null
                               ? TextStyle(
                                   fontSize: 10.0,
@@ -155,13 +156,13 @@ class _ForYouCarouselState extends State<SongListCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    SongModel songModel = Provider.of(context);
+    LessonModel songModel = Provider.of(context);
     return Expanded(
       child: ListView.builder(
         scrollDirection: Axis.vertical,
         itemCount: songModel.songs.length,
         itemBuilder: (BuildContext context, int index) {
-          Song data = songModel.songs[index];
+          Lesson data = songModel.songs[index];
           return GestureDetector(
             onTap: () {
               if (null != data.url) {
@@ -172,7 +173,7 @@ class _ForYouCarouselState extends State<SongListCarousel> {
                 });
               }
             },
-            child: _buildSongItem(data),
+            child: _buildLessonItem(data),
           );
         },
       ),

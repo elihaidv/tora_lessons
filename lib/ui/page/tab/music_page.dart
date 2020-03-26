@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_music_app/generated/i18n.dart';
 import 'package:flutter_music_app/model/download_model.dart';
 import 'package:flutter_music_app/model/song_model.dart';
+import 'package:flutter_music_app/service/Models.dart';
 import 'package:flutter_music_app/ui/page/player_page.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -33,7 +34,7 @@ class _MusicPageState extends State<MusicPage>
 
   @override
   bool get wantKeepAlive => true;
-  Widget _buildSongItem(Song data) {
+  Widget _buildSongItem(Lesson data) {
     DownloadModel downloadModel = Provider.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
@@ -44,7 +45,7 @@ class _MusicPageState extends State<MusicPage>
             child: Container(
                 width: 50,
                 height: 50,
-                child: Image(image: CachedNetworkImageProvider(data.pic))),
+                child: Image(image: CachedNetworkImageProvider(data.image))),
           ),
           SizedBox(
             width: 20.0,
@@ -72,7 +73,7 @@ class _MusicPageState extends State<MusicPage>
                     height: 10,
                   ),
                   Text(
-                    data.author,
+                    data.rav.name,
                     style: data.url == null
                         ? TextStyle(
                             fontSize: 10.0,
@@ -115,25 +116,25 @@ class _MusicPageState extends State<MusicPage>
                 children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(20.0),
-            child: Text(S.of(context).tabMusic,
+            child: Text(S.of(context).tabSaved,
                 style: TextStyle(
                     fontSize: 22.0,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1.2)),
           ),
           Expanded(
-              child: downloadModel.downloadSong.length == 0
+              child: downloadModel.downloadLesson.length == 0
                   ? Center(child: Text('none'))
                   : ListView.builder(
-                      itemCount: downloadModel.downloadSong.length,
+                      itemCount: downloadModel.downloadLesson.length,
                       itemBuilder: (BuildContext context, int index) {
-                        Song data = downloadModel.downloadSong[index];
+                        Lesson data = downloadModel.downloadLesson[index];
                         return GestureDetector(
                           onTap: () {
                             if (null != data.url) {
-                              SongModel songModel = Provider.of(context);
-                              songModel.setSongs(new List<Song>.from(
-                                  downloadModel.downloadSong));
+                              LessonModel songModel = Provider.of(context);
+                              songModel.setLessons(new List<Lesson>.from(
+                                  downloadModel.downloadLesson));
                               songModel.setCurrentIndex(index);
                               Navigator.push(
                                 context,

@@ -2,12 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_music_app/generated/i18n.dart';
 import 'package:flutter_music_app/model/song_model.dart';
+import 'package:flutter_music_app/service/Models.dart';
 import 'package:flutter_music_app/ui/page/albums_page.dart';
 
 class AlbumsCarousel extends StatefulWidget {
-  final List<Song> alubums;
+  final List<Rav> ravs;
 
-  AlbumsCarousel(this.alubums);
+  AlbumsCarousel(this.ravs);
   @override
   _AlbumsCarouselState createState() => _AlbumsCarouselState();
 }
@@ -47,9 +48,9 @@ class _AlbumsCarouselState extends State<AlbumsCarousel> {
             child: ListView.builder(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
-              itemCount: widget.alubums.length,
+              itemCount: widget.ravs.length,
               itemBuilder: (BuildContext context, int index) {
-                Song data = widget.alubums[index];
+                Rav data = widget.ravs[index];
                 return GestureDetector(
                   onTap: () => {
                     Navigator.push(
@@ -63,7 +64,7 @@ class _AlbumsCarouselState extends State<AlbumsCarousel> {
                   },
                   child: Container(
                     width: 140,
-                    margin: index == widget.alubums.length - 1
+                    margin: index == widget.ravs.length - 1
                         ? EdgeInsets.only(right: 20.0)
                         : EdgeInsets.only(right: 0.0),
                     child: Padding(
@@ -76,7 +77,7 @@ class _AlbumsCarouselState extends State<AlbumsCarousel> {
                             child: Image(
                               height: 120.0,
                               width: 120.0,
-                              image: CachedNetworkImageProvider(data.pic),
+                              image: CachedNetworkImageProvider(data.image),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -84,7 +85,7 @@ class _AlbumsCarouselState extends State<AlbumsCarousel> {
                             height: 10,
                           ),
                           Text(
-                            data.title,
+                            data.name,
                             style: TextStyle(
                               fontSize: 12.0,
                               fontWeight: FontWeight.w600,
@@ -96,7 +97,7 @@ class _AlbumsCarouselState extends State<AlbumsCarousel> {
                             height: 10,
                           ),
                           Text(
-                            data.author,
+                            data.name,
                             style: TextStyle(
                               fontSize: 10.0,
                               color: Colors.grey,

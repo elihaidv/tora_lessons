@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_music_app/generated/i18n.dart';
 import 'package:flutter_music_app/model/favorite_model.dart';
 import 'package:flutter_music_app/model/song_model.dart';
+import 'package:flutter_music_app/service/Models.dart';
 import 'package:flutter_music_app/ui/page/player_page.dart';
 import 'package:provider/provider.dart';
 
 class ForYouCarousel extends StatefulWidget {
-  final List<Song> forYou;
+  final List<Lesson> forYou;
 
   ForYouCarousel(this.forYou);
   @override
@@ -15,7 +16,7 @@ class ForYouCarousel extends StatefulWidget {
 }
 
 class _ForYouCarouselState extends State<ForYouCarousel> {
-  Widget _buildSongItem(Song data) {
+  Widget _buildSongItem(Lesson data) {
     FavoriteModel favoriteModel = Provider.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
@@ -26,7 +27,7 @@ class _ForYouCarouselState extends State<ForYouCarousel> {
             child: Container(
                 width: 50,
                 height: 50,
-                child: Image(image: CachedNetworkImageProvider(data.pic))),
+                child: Image(image: CachedNetworkImageProvider(data.image))),
           ),
           SizedBox(
             width: 20.0,
@@ -54,7 +55,7 @@ class _ForYouCarouselState extends State<ForYouCarousel> {
                     height: 10,
                   ),
                   Text(
-                    data.author,
+                    data.rav.name,
                     style: data.url == null
                         ? TextStyle(
                             fontSize: 10.0,
@@ -125,12 +126,12 @@ class _ForYouCarouselState extends State<ForYouCarousel> {
         scrollDirection: Axis.vertical,
         itemCount: widget.forYou.length,
         itemBuilder: (BuildContext context, int index) {
-          Song data = widget.forYou[index];
+          Lesson data = widget.forYou[index];
           return GestureDetector(
             onTap: () {
               if (null != data.url) {
-                SongModel songModel = Provider.of(context);
-                songModel.setSongs(new List<Song>.from(widget.forYou));
+                LessonModel songModel = Provider.of(context);
+                songModel.setLessons(new List<Lesson>.from(widget.forYou));
                 songModel.setCurrentIndex(index);
                 Navigator.push(
                   context,

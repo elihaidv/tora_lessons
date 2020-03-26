@@ -10,7 +10,7 @@ class RotatePlayer extends AnimatedWidget {
 
   Widget build(BuildContext context) {
     final Animation<double> animation = listenable;
-    SongModel songModel = Provider.of(context);
+    LessonModel songModel = Provider.of(context);
     return GestureDetector(
       onTap: () {},
       child: RotationTransition(
@@ -21,7 +21,7 @@ class RotatePlayer extends AnimatedWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             image: DecorationImage(
-              image: CachedNetworkImageProvider(songModel.currentSong.pic),
+              image: CachedNetworkImageProvider(songModel.currentLesson.image),
             ),
           ),
         ),

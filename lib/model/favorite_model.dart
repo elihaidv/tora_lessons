@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_music_app/model/song_model.dart';
 import 'package:flutter_music_app/provider/view_state_list_model.dart';
+import 'package:flutter_music_app/service/Models.dart';
 import 'package:localstorage/localstorage.dart';
 
 const String kLocalStorageSearch = 'kLocalStorageSearch';
 const String kFavoriteList = 'kFavoriteList';
 
 /// 我的收藏列表
-class FavoriteListModel extends ViewStateListModel<Song> {
+class FavoriteListModel extends ViewStateListModel<Lesson> {
   FavoriteModel favoriteModel;
 
   FavoriteListModel({this.favoriteModel});
   @override
-  Future<List<Song>> loadData() async {
+  Future<List<Lesson>> loadData() async {
     LocalStorage localStorage = LocalStorage(kLocalStorageSearch);
     await localStorage.ready;
-    List<Song> favoriteList =
-        (localStorage.getItem(kFavoriteList) ?? []).map<Song>((item) {
-      return Song.fromJsonMap(item);
+    List<Lesson> favoriteList =
+        (localStorage.getItem(kFavoriteList) ?? []).map<Lesson>((item) {
+      return Lesson.fromJson(item);
     }).toList();
     favoriteModel.setFavorites(favoriteList);
     setIdle();
@@ -26,19 +27,19 @@ class FavoriteListModel extends ViewStateListModel<Song> {
 }
 
 class FavoriteModel with ChangeNotifier {
-  List<Song> _favoriteSong;
-  List<Song> get favoriteSong => _favoriteSong;
+  List<Lesson> _favoriteLesson;
+  List<Lesson> get favoriteLesson => _favoriteLesson;
 
-  setFavorites(List<Song> favoriteSong) {
-    _favoriteSong = favoriteSong;
+  setFavorites(List<Lesson> favoriteLesson) {
+    _favoriteLesson = favoriteLesson;
     notifyListeners();
   }
 
-  collect(Song song) {
-    if (_favoriteSong.contains(song)) {
-      _favoriteSong.remove(song);
+  collect(Lesson song) {
+    if (_favoriteLesson.contains(song)) {
+      _favoriteLesson.remove(song);
     } else {
-      _favoriteSong.add(song);
+      _favoriteLesson.add(song);
     }
     saveData();
     notifyListeners();
@@ -47,13 +48,13 @@ class FavoriteModel with ChangeNotifier {
   saveData() async {
     LocalStorage localStorage = LocalStorage(kLocalStorageSearch);
     await localStorage.ready;
-    localStorage.setItem(kFavoriteList, _favoriteSong);
+    localStorage.setItem(kFavoriteList, _favoriteLesson);
   }
 
-  isCollect(Song newSong) {
+  isCollect(Lesson newLesson) {
     bool isCollect = false;
-    for (int i = 0; i < _favoriteSong.length; i++) {
-      if (_favoriteSong[i].songid == newSong.songid) {
+    for (int i = 0; i < _favoriteLesson.length; i++) {
+      if (_favoriteLesson[i].id == newLesson.id) {
         isCollect = true;
         break;
       }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_music_app/generated/i18n.dart';
+import 'package:flutter_music_app/service/Models.dart';
 import 'package:flutter_music_app/ui/widget/app_bar.dart';
 import 'package:flutter_music_app/model/song_model.dart';
 import 'package:flutter_music_app/provider/provider_widget.dart';
@@ -8,6 +9,8 @@ import 'package:flutter_music_app/ui/helper/refresh_helper.dart';
 import 'package:flutter_music_app/ui/page/player_page.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+import '../../model/song_model.dart';
 
 class SearchPage extends StatefulWidget {
   final String input;
@@ -18,7 +21,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  Widget _buildSongItem(Song data) {
+  Widget _buildSongItem(Lesson data) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
       child: Row(
@@ -26,7 +29,7 @@ class _SearchPageState extends State<SearchPage> {
           ClipRRect(
             borderRadius: BorderRadius.circular(12.0),
             child: Container(
-                width: 50, height: 50, child: Image.network(data.pic)),
+                width: 50, height: 50, child: Image.network(data.image)),
           ),
           SizedBox(
             width: 20.0,
@@ -54,7 +57,7 @@ class _SearchPageState extends State<SearchPage> {
                     height: 10,
                   ),
                   Text(
-                    data.author,
+                    data.rav.name,
                     style: data.url == null
                         ? TextStyle(
                             fontSize: 10.0,
@@ -96,11 +99,11 @@ class _SearchPageState extends State<SearchPage> {
                 alignment: Alignment.center,
                 child: Text(S.of(context).searchResult + widget.input)),
             Expanded(
-              child: ProviderWidget<SongListModel>(
+              child: ProviderWidget<LessonListModel>(
                   onModelReady: (model) async {
                     await model.initData();
                   },
-                  model: SongListModel(input: widget.input),
+                  model: LessonListModel(input: widget.input),
                   builder: (context, model, child) {
                     if (model.busy) {
                       // return SkeletonList(
@@ -128,12 +131,12 @@ class _SearchPageState extends State<SearchPage> {
                       child: ListView.builder(
                           itemCount: model.list.length,
                           itemBuilder: (context, index) {
-                            Song data = model.list[index];
+                            Lesson data = model.list[index];
                             return GestureDetector(
                                 onTap: () {
                                   if (null != data.url) {
-                                    SongModel songModel = Provider.of(context);
-                                    songModel.setSongs(model.list);
+                                    LessonModel songModel = Provider.of(context);
+                                    songModel.setLessons(model.list);
                                     songModel.setCurrentIndex(index);
                                     Navigator.push(
                                       context,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_music_app/model/favorite_model.dart';
 import 'package:flutter_music_app/model/song_model.dart';
 import 'package:flutter_music_app/provider/provider_widget.dart';
+import 'package:flutter_music_app/service/Models.dart';
 import 'package:flutter_music_app/ui/page/player_page.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +14,7 @@ class AlbumCarousel extends StatefulWidget {
 }
 
 class _AlbumCarouselState extends State<AlbumCarousel> {
-  Widget _buildSongItem(Song data, int index) {
+  Widget _buildLessonItem(Lesson data, int index) {
     FavoriteModel favoriteModel = Provider.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
@@ -61,7 +62,7 @@ class _AlbumCarouselState extends State<AlbumCarousel> {
                     height: 10,
                   ),
                   Text(
-                    data.author,
+                    data.rav.name,
                     style: data.url == null
                         ? TextStyle(
                             fontSize: 10.0,
@@ -101,11 +102,11 @@ class _AlbumCarouselState extends State<AlbumCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    return ProviderWidget<SongListModel>(
+    return ProviderWidget<LessonListModel>(
         onModelReady: (model) async {
           await model.initData();
         },
-        model: SongListModel(input: widget.input),
+        model: LessonListModel(input: widget.input),
         builder: (context, model, child) {
           return Container(
             child: ListView.builder(
@@ -114,12 +115,12 @@ class _AlbumCarouselState extends State<AlbumCarousel> {
               scrollDirection: Axis.vertical,
               itemCount: model.list.length,
               itemBuilder: (BuildContext context, int index) {
-                Song data = model.list[index];
+                Lesson data = model.list[index];
                 return GestureDetector(
                   onTap: () {
                     if (null != data.url) {
-                      SongModel songModel = Provider.of(context);
-                      songModel.setSongs(model.list);
+                      LessonModel songModel = Provider.of(context);
+                      songModel.setLessons(model.list);
                       songModel.setCurrentIndex(index);
                       Navigator.push(
                         context,
@@ -131,7 +132,7 @@ class _AlbumCarouselState extends State<AlbumCarousel> {
                       );
                     }
                   },
-                  child: _buildSongItem(data, index + 1),
+                  child: _buildLessonItem(data, index + 1),
                 );
               },
             ),

@@ -28,7 +28,7 @@ class _MinePageState extends State<MinePage>
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(20.0),
-            child: Text(S.of(context).tabUser,
+            child: Text(S.of(context).tabCategories,
                 style: TextStyle(
                     fontSize: 22.0,
                     fontWeight: FontWeight.bold,

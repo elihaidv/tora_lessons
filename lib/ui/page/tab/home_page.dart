@@ -11,6 +11,8 @@ import 'package:flutter_music_app/ui/page/search_page.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../../model/song_model.dart';
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -21,7 +23,6 @@ class _HomePageState extends State<HomePage>
   AnimationController controllerRecord;
   Animation<double> animationRecord;
   final _inputController = TextEditingController();
-  final _commonTween = new Tween<double>(begin: 0.0, end: 1.0);
 
   @override
   bool get wantKeepAlive => true;
@@ -51,7 +52,7 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    SongModel songModel = Provider.of(context);
+    LessonModel songModel = Provider.of(context);
     if (songModel.isPlaying) {
       controllerRecord.forward();
     } else {
@@ -77,7 +78,7 @@ class _HomePageState extends State<HomePage>
                       error: homeModel.viewStateError,
                       onPressed: homeModel.initData);
                 }
-                var albums = homeModel?.albums ?? [];
+                var ravs = homeModel?.ravs ?? [];
                 var forYou = homeModel?.forYou ?? [];
                 return Column(children: <Widget>[
                   Padding(
@@ -120,15 +121,9 @@ class _HomePageState extends State<HomePage>
                                       color: Colors.grey,
                                     ),
                                     hintText: songModel.songs != null
-                                        ? songModel.currentSong.title
+                                        ? songModel.currentLesson.title
                                         : S.of(context).searchSuggest),
                               )),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 20.0),
-                          child: RotateRecord(
-                              animation:
-                                  _commonTween.animate(controllerRecord)),
                         ),
                       ],
                     ),
@@ -144,7 +139,7 @@ class _HomePageState extends State<HomePage>
                         SizedBox(
                           height: 10,
                         ),
-                        AlbumsCarousel(albums),
+                        AlbumsCarousel(ravs),
                         ForYouCarousel(forYou),
                       ]),
                     ),

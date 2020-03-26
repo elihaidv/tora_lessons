@@ -9,7 +9,7 @@ final Http http = Http();
 class Http extends BaseHttp {
   @override
   void init() {
-    options.baseUrl = 'https://music.liuzhijin.cn';
+    options.baseUrl = 'https://5e791189491e9700162de807.mockapi.io/api';
     interceptors..add(ApiInterceptor())
         /*// cookie持久化 异步
       ..add(CookieManager(

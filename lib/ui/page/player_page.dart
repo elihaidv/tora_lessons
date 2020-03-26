@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_music_app/anims/player_anim.dart';
 import 'package:flutter_music_app/model/download_model.dart';
 import 'package:flutter_music_app/model/favorite_model.dart';
+import 'package:flutter_music_app/service/Models.dart';
 import 'package:flutter_music_app/ui/widget/app_bar.dart';
 import 'package:flutter_music_app/model/song_model.dart';
 import 'package:flutter_music_app/ui/widget/player_carousel.dart';
@@ -45,13 +46,9 @@ class _PlayPageState extends State<PlayPage> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  String getSongUrl(Song s) {
-    return 'http://music.163.com/song/media/outer/url?id=${s.songid}.mp3';
-  }
-
   @override
   Widget build(BuildContext context) {
-    SongModel songModel = Provider.of(context);
+    LessonModel songModel = Provider.of(context);
     DownloadModel downloadModel = Provider.of(context);
     FavoriteModel favouriteModel = Provider.of(context);
     if (songModel.isPlaying) {
@@ -109,9 +106,9 @@ class _PlayPageState extends State<PlayPage> with TickerProviderStateMixin {
                                   ),
                                   IconButton(
                                     onPressed: () => favouriteModel
-                                        .collect(songModel.currentSong),
+                                        .collect(songModel.currentLesson),
                                     icon: favouriteModel.isCollect(
-                                                songModel.currentSong) ==
+                                                songModel.currentLesson) ==
                                             true
                                         ? Icon(
                                             Icons.favorite,
@@ -127,9 +124,9 @@ class _PlayPageState extends State<PlayPage> with TickerProviderStateMixin {
                                   ),
                                   IconButton(
                                     onPressed: () => downloadModel
-                                        .download(songModel.currentSong),
+                                        .download(songModel.currentLesson),
                                     icon: downloadModel
-                                            .isDownload(songModel.currentSong)
+                                            .isDownload(songModel.currentLesson)
                                         ? Icon(
                                             Icons.cloud_done,
                                             size: 25.0,
@@ -147,7 +144,7 @@ class _PlayPageState extends State<PlayPage> with TickerProviderStateMixin {
                                 height:
                                     MediaQuery.of(context).size.height * 0.02),
                             Text(
-                              songModel.currentSong.author,
+                              songModel.currentLesson.rav.name,
                               style:
                                   TextStyle(color: Colors.grey, fontSize: 15.0),
                             ),
@@ -155,12 +152,12 @@ class _PlayPageState extends State<PlayPage> with TickerProviderStateMixin {
                                 height:
                                     MediaQuery.of(context).size.height * 0.01),
                             Text(
-                              songModel.currentSong.title,
+                              songModel.currentLesson.title,
                               style: TextStyle(fontSize: 20.0),
                             ),
                           ],
                         )
-                      : SongListCarousel(),
+                      : LessonListCarousel(),
                 ],
               ),
             ),

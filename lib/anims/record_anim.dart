@@ -12,7 +12,7 @@ class RotateRecord extends AnimatedWidget {
 
   Widget build(BuildContext context) {
     final Animation<double> animation = listenable;
-    SongModel songModel = Provider.of(context);
+    LessonModel songModel = Provider.of(context);
     return GestureDetector(
       onTap: () {
         if (songModel.songs != null) {
@@ -36,7 +36,7 @@ class RotateRecord extends AnimatedWidget {
                 shape: BoxShape.circle,
                 image: DecorationImage(
                   image: CachedNetworkImageProvider(songModel.songs != null
-                      ? songModel.currentSong.pic
+                      ? songModel.currentLesson.image
                       : ImageHelper.randomUrl()),
                 ),
               ),

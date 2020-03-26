@@ -2,10 +2,11 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_music_app/model/download_model.dart';
 import 'package:flutter_music_app/model/song_model.dart';
+import 'package:flutter_music_app/service/Models.dart';
 
 class Player extends StatefulWidget {
   /// 播放列表
-  final SongModel songData;
+  final LessonModel songData;
   final DownloadModel downloadData;
 
   //是否立即播放
@@ -37,7 +38,7 @@ class Player extends StatefulWidget {
 class PlayerState extends State<Player> {
   Duration _duration;
   Duration _position;
-  SongModel _songData;
+  LessonModel _songData;
   DownloadModel _downloadData;
   bool _isSeeking = false;
 
@@ -51,11 +52,11 @@ class PlayerState extends State<Player> {
     _downloadData = widget.downloadData;
     _initAudioPlayer(_songData);
     if (_songData.isPlaying || widget.nowPlay) {
-      play(_songData.currentSong);
+      play(_songData.currentLesson);
     }
   }
 
-  void _initAudioPlayer(SongModel songData) {
+  void _initAudioPlayer(LessonModel songData) {
     _audioPlayer = songData.audioPlayer;
     _position = _songData.position;
     _duration = _songData.duration;
@@ -73,10 +74,10 @@ class PlayerState extends State<Player> {
 
         // set at least title to see the notification bar on ios.
         _audioPlayer.setNotification(
-            title: _songData.currentSong.title,
-            artist: _songData.currentSong.author,
+            title: _songData.currentLesson.title,
+            artist: _songData.currentLesson.rav.name,
             //albumTitle: 'Name or blank',
-            imageUrl: _songData.currentSong.pic,
+            imageUrl: _songData.currentLesson.image,
             forwardSkipInterval: const Duration(seconds: 30), // default is 30s
             backwardSkipInterval: const Duration(seconds: 30), // default is 30s
             duration: duration,
@@ -131,16 +132,13 @@ class PlayerState extends State<Player> {
     });
   }
 
-  String getSongUrl(Song s) {
-    return 'http://music.163.com/song/media/outer/url?id=${s.songid}.mp3';
-  }
 
-  void play(Song s) async {
+  void play(Lesson s) async {
     String url;
     if (_downloadData.isDownload(s)) {
-      url = _downloadData.getDirectoryPath + '/${s.songid}.mp3';
+      url = _downloadData.getDirectoryPath + '/${s.id}.mp3';
     } else {
-      url = getSongUrl(s);
+      url = s.url;
     }
     if (url == _songData.url) {
       int result = await _audioPlayer.setUrl(url);
@@ -167,17 +165,17 @@ class PlayerState extends State<Player> {
   }
 
   void next() {
-    Song data = _songData.nextSong;
+    Lesson data = _songData.nextLesson;
     while (data.url == null) {
-      data = _songData.nextSong;
+      data = _songData.nextLesson;
     }
     play(data);
   }
 
   void previous() {
-    Song data = _songData.prevSong;
+    Lesson data = _songData.prevLesson;
     while (data.url == null) {
-      data = _songData.prevSong;
+      data = _songData.prevLesson;
     }
     play(data);
   }
@@ -193,7 +191,7 @@ class PlayerState extends State<Player> {
   @override
   Widget build(BuildContext context) {
     if (_songData.playNow) {
-      play(_songData.currentSong);
+      play(_songData.currentLesson);
     }
     return Column(
       children: _controllers(context),

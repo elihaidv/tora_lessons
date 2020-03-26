@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_music_app/generated/i18n.dart';
 import 'package:flutter_music_app/model/favorite_model.dart';
 import 'package:flutter_music_app/model/song_model.dart';
+import 'package:flutter_music_app/service/Models.dart';
 import 'package:flutter_music_app/ui/page/player_page.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +16,7 @@ class _FavoritePageState extends State<FavoritePage>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  Widget _buildSongItem(Song data) {
+  Widget _buildSongItem(Lesson data) {
     FavoriteModel favoriteModel = Provider.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
@@ -26,7 +27,7 @@ class _FavoritePageState extends State<FavoritePage>
             child: Container(
                 width: 50,
                 height: 50,
-                child: Image(image: CachedNetworkImageProvider(data.pic))),
+                child: Image(image: CachedNetworkImageProvider(data.image))),
           ),
           SizedBox(
             width: 20.0,
@@ -54,7 +55,7 @@ class _FavoritePageState extends State<FavoritePage>
                     height: 10,
                   ),
                   Text(
-                    data.author,
+                    data.rav.name,
                     style: data.url == null
                         ? TextStyle(
                             fontSize: 10.0,
@@ -110,18 +111,18 @@ class _FavoritePageState extends State<FavoritePage>
                     letterSpacing: 1.2)),
           ),
           Expanded(
-            child: favoriteModel.favoriteSong.length == 0
+            child: favoriteModel.favoriteLesson.length == 0
                 ? Center(child: Text('none'))
                 : ListView.builder(
-                    itemCount: favoriteModel.favoriteSong.length,
+                    itemCount: favoriteModel.favoriteLesson.length,
                     itemBuilder: (BuildContext context, int index) {
-                      Song data = favoriteModel.favoriteSong[index];
+                      Lesson data = favoriteModel.favoriteLesson[index];
                       return GestureDetector(
                         onTap: () {
                           if (null != data.url) {
-                            SongModel songModel = Provider.of(context);
-                            songModel.setSongs(new List<Song>.from(
-                                favoriteModel.favoriteSong));
+                            LessonModel songModel = Provider.of(context);
+                            songModel.setLessons(new List<Lesson>.from(
+                                favoriteModel.favoriteLesson));
                             songModel.setCurrentIndex(index);
                             Navigator.push(
                               context,

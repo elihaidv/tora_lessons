@@ -1,21 +1,25 @@
 import 'dart:math';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_music_app/provider/view_state_refresh_list_model.dart';
-import 'package:flutter_music_app/service/base_repository.dart';
+import 'package:flutter_music_app/service/Models.dart';
+import 'package:flutter_music_app/service/ServerAccess.dart';
 
-class SongListModel extends ViewStateRefreshListModel<Song> {
+class LessonListModel extends ViewStateRefreshListModel<Lesson> {
   final String input;
 
-  SongListModel({this.input});
+  LessonListModel({this.input});
 
   @override
-  Future<List<Song>> loadData({int pageNum}) async {
-    return await BaseRepository.fetchSongList(input, pageNum);
+  Future<List<Lesson>> loadData({int pageNum}) async {
+    final client = RestClient(Dio());
+    return client.getLessons();
+  
   }
 }
 
-class SongModel with ChangeNotifier {
+class LessonModel with ChangeNotifier {
   String _url;
   String get url => _url;
   setUrl(String url) {
@@ -26,7 +30,7 @@ class SongModel with ChangeNotifier {
   AudioPlayer _audioPlayer = AudioPlayer();
   AudioPlayer get audioPlayer => _audioPlayer;
 
-  List<Song> _songs;
+  List<Lesson> _songs;
 
   bool _isPlaying = false;
   bool get isPlaying => _isPlaying;
@@ -49,24 +53,24 @@ class SongModel with ChangeNotifier {
     notifyListeners();
   }
 
-  int _currentSongIndex = 0;
+  int _currentLessonIndex = 0;
 
-  List<Song> get songs => _songs;
-  setSongs(List<Song> songs) {
+  List<Lesson> get songs => _songs;
+  setLessons(List<Lesson> songs) {
     _songs = songs;
     notifyListeners();
   }
 
-  addSongs(List<Song> songs) {
+  addLessons(List<Lesson> songs) {
     _songs.addAll(songs);
     notifyListeners();
   }
 
   int get length => _songs.length;
-  int get songNumber => _currentSongIndex + 1;
+  int get songNumber => _currentLessonIndex + 1;
 
   setCurrentIndex(int index) {
-    _currentSongIndex = index;
+    _currentLessonIndex = index;
     notifyListeners();
   }
 
@@ -78,38 +82,38 @@ class SongModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Song get currentSong => _songs[_currentSongIndex];
+  Lesson get currentLesson => _songs[_currentLessonIndex];
 
-  Song get nextSong {
+  Lesson get nextLesson {
     if (isRepeat) {
-      if (_currentSongIndex < length) {
-        _currentSongIndex++;
+      if (_currentLessonIndex < length) {
+        _currentLessonIndex++;
       }
-      if (_currentSongIndex == length) {
-        _currentSongIndex = 0;
+      if (_currentLessonIndex == length) {
+        _currentLessonIndex = 0;
       }
     } else {
       Random r = new Random();
-      _currentSongIndex = r.nextInt(_songs.length);
+      _currentLessonIndex = r.nextInt(_songs.length);
     }
     notifyListeners();
-    return _songs[_currentSongIndex];
+    return _songs[_currentLessonIndex];
   }
 
-  Song get prevSong {
+  Lesson get prevLesson {
     if (isRepeat) {
-      if (_currentSongIndex > 0) {
-        _currentSongIndex--;
+      if (_currentLessonIndex > 0) {
+        _currentLessonIndex--;
       }
-      if (_currentSongIndex == 0) {
-        _currentSongIndex = length - 1;
+      if (_currentLessonIndex == 0) {
+        _currentLessonIndex = length - 1;
       }
     } else {
       Random r = new Random();
-      _currentSongIndex = r.nextInt(_songs.length);
+      _currentLessonIndex = r.nextInt(_songs.length);
     }
     notifyListeners();
-    return _songs[_currentSongIndex];
+    return _songs[_currentLessonIndex];
   }
 
   Duration _position;
@@ -124,39 +128,5 @@ class SongModel with ChangeNotifier {
   void setDuration(Duration duration) {
     _duration = duration;
     notifyListeners();
-  }
-}
-
-class Song {
-  String type;
-  String link;
-  int songid;
-  String title;
-  String author;
-  String lrc;
-  String url;
-  String pic;
-
-  Song.fromJsonMap(Map<String, dynamic> map)
-      : type = map["type"],
-        link = map["link"],
-        songid = map["songid"],
-        title = map["title"],
-        author = map["author"],
-        lrc = map["lrc"],
-        url = map["url"],
-        pic = map["pic"];
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['type'] = type;
-    data['link'] = link;
-    data['songid'] = songid;
-    data['title'] = title;
-    data['author'] = author;
-    data['lrc'] = lrc;
-    data['url'] = url;
-    data['pic'] = pic;
-    return data;
   }
 }

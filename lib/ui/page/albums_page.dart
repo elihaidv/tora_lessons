@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_music_app/service/Models.dart';
 import 'package:flutter_music_app/ui/widget/album_carousel.dart';
 import 'package:flutter_music_app/ui/widget/app_bar.dart';
 import 'package:flutter_music_app/model/song_model.dart';
 
 class AlbumsPage extends StatefulWidget {
-  final Song data;
+  final Rav data;
 
   AlbumsPage({this.data});
+
   @override
   _AlbumsPageState createState() => _AlbumsPageState();
 }
@@ -24,16 +26,20 @@ class _AlbumsPageState extends State<AlbumsPage> {
               children: <Widget>[
                 Center(
                     child: Container(
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  height: MediaQuery.of(context).size.width * 0.5,
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(30.0),
-                      child: Container(child: Image.network(widget.data.pic))),
-                )),
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        height: MediaQuery.of(context).size.width * 0.5,
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(30.0),
+                            child: Container(
+                                child: Image.network(widget.data.image)
+                            )
+                        )
+                    )
+                ),
                 SizedBox(height: 20.0),
                 Center(
                   child: Text(
-                    widget.data.author,
+                    widget.data.name,
                     style: TextStyle(fontSize: 12.0),
                   ),
                 ),
@@ -92,7 +98,7 @@ class _AlbumsPageState extends State<AlbumsPage> {
                     ),
                   ],
                 ),
-                AlbumCarousel(input: widget.data.author),
+                AlbumCarousel(input: widget.data.name),
               ],
             ),
           ),
